@@ -6,7 +6,7 @@ export default defineConfig({
     lib: {
       entry: ['src/index.ts'],
       name: 'POEL10N_CORE',
-      formats: ['es', 'umd'],
+      fileName: (format) => (format === "es" ? "index.js" : "index.umd.js"),
     }
   },
   plugins: [
