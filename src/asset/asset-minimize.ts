@@ -22,6 +22,8 @@ export interface AssetVendorMinimize {
   // localizedPresentations: LiteralLocalizedPresentationViewMode[];
   lp: LiteralLocalizedPresentationViewMode[];
   lpt: AssetLocalizedPresentationTiming;
+  // corrupted
+  c?: true;
 }
 
 export class AssetVendorMinimizeModel {
@@ -35,6 +37,7 @@ export class AssetVendorMinimizeModel {
       pm: assetVendor.presentationMode,
       lp: assetVendor.localizedPresentations,
       lpt: assetVendor.localizedPresentationTiming,
+      c: assetVendor.corrupted,
     }
   }
 
@@ -48,7 +51,8 @@ export class AssetVendorMinimizeModel {
       elParentId: assetVendorMinimize.epi,
       presentationMode: assetVendorMinimize.pm,
       localizedPresentations: assetVendorMinimize.lp,
-      elInspect: undefined
+      elInspect: undefined,
+      corrupted: assetVendorMinimize.c,
     }
   }
 

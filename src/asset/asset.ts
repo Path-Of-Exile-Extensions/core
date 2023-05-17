@@ -69,9 +69,21 @@ export interface Asset {
   localizedPresentations: LiteralLocalizedPresentationViewMode[];
   // 本地化的时机
   localizedPresentationTiming: AssetLocalizedPresentationTiming;
+  /**
+   * literal 是否包含子 dom 元素, 为了节省文件体积, 这个属性仅会在 true 时才会被序列化
+   * 例如
+   * <div class="filter-title">
+   *             Armour
+   * <div class="filter-tip"><p>Includes base value, local modifiers, and maximum quality</p></div>
+   * </div>
+   * literal 为 Armour, Armour 之后的 div 为子 dom 元素, 这种需要特殊处理下
+   */
+  corrupted?: true;
   // 关联 dom 元素, 不会被序列化, 仅用于调试
   elInspect?: HTMLElement;
 }
+
+export type AssetRecord = Record<string, Asset>;
 
 export interface AssetLinkList {
   asset: Asset;
