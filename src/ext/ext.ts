@@ -31,16 +31,14 @@ export const Ext = {
     },
   },
   local: {
-    async get() {
-      const key = "assets";
+    async get(key: string) {
       const data = (await chrome.storage.local.get(key));
       if (data[key] && typeof data[key] === "string") {
         return JSON.parse(data[key])
       }
-      return null;
+      return data;
     },
-    async set(value: any) {
-      const key = "assets";
+    async set(key: string, value: any) {
       if (typeof value === "object") {
         value = JSON.stringify(value)
       }
@@ -64,8 +62,11 @@ export const Ext = {
     }
   },
   on: {
-    message(callback: (message: ExtMessage) => boolean) {
-      return chrome.runtime.onMessage.addListener(callback);
+    message(callback: (message: ExtMessage) => void) {
+      return chrome.runtime.onMessage.addListener((message) => {
+        callback(message)
+        return true;
+      });
     },
     localChanged(callback: (message: ExtMessage) => void) {
       return Ext.on.message((message) => {

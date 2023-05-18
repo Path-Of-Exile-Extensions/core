@@ -10,4 +10,6 @@ export enum ExtMessageDirections {
 
 export enum BuiltInExtMessageIdentities {
   LocalChanged = "LocalChanged",
+  // ContentScript 注入完成
+  ContentScriptReady = "ContentScriptReady",
 }

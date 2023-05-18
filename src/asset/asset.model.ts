@@ -41,6 +41,7 @@ export class AssetModel {
   public static getAssetId(asset: Asset) {
     let id: string = "";
     id += asset.literal;
+    id += "_" + asset.presentationMode;
     if (asset.elParentId) {
       id = id + "_" + asset.elParentId;
     }
