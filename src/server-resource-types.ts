@@ -53,6 +53,10 @@ export namespace ServerResourceTypes {
   }
 
   export namespace Static {
+    export interface Response {
+      result: Statics[]
+    }
+
     export interface Statics {
       id: string
       label?: string
