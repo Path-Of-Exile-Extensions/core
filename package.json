@@ -16,7 +16,8 @@
     "vite": "^4.3.6",
     "vite-plugin-dts": "^2.3.0",
     "typescript": "^5.0.4",
-    "chrome-types": "^0.1.194"
+    "chrome-types": "^0.1.194",
+    "@types/node": "18"
   },
   "files": [
     "package.json",
