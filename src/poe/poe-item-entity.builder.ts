@@ -5,7 +5,8 @@ export class PoeItemEntityBuilder {
   static fromStructure(item: Partial<POEItem>) {
     return new POEItemEntity({
         name: item.name!,
-        type: item.type!,
+        baseType: item.baseType!,
+        primitiveLanguage: item.primitiveLanguage!,
       }
     )
   }

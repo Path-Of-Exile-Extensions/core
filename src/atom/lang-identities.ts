@@ -1,12 +1,16 @@
 // 语言标识
 export enum LanguageIdentities {
   // 英语 (原始语言)
-  "en" = "en",
+  en = "en",
   // 简体和繁体中文标识来源参见 Language Tags 部分 https://sites.psu.edu/symbolcodes/languages/asia/chinese/
   // 简体中文
   "zh-Hans" = "zh-Hans",
   // 繁体中文
   "zh-Hant" = "zh-Hant",
+  // 韩国/朝鲜文(不了解韩国朝鲜, 应该是用一样的文字吧)
+  ko = "ko",
+  // 日文
+  ja = "ja",
 }
 
 export class LanguageIdentityModal {

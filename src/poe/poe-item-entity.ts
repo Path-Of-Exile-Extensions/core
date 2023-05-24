@@ -6,6 +6,4 @@ export class POEItemEntity {
   constructor(poeItem: POEItem) {
     this.poeItem = poeItem
   }
-
-
 }
