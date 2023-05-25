@@ -3,6 +3,8 @@ export enum LiteralPresentationMode {
   // 直接可以被看到的文本元素, 例如 Type Filter, Search Listed Items
   Text = 1,
   // 不能被直接看到, 但是鼠标移动上去可以看到的信息, 例如 Armour Filters 的 Armour 鼠标移动上去可以看到详情
+  Tip = 2,
+  // 不能被直接看到, 但是鼠标移动上去可以看到的信息, 通货页面的通货名称
   Tooltip = 2,
   // 不能被直接看到, 用来填充 Input(Select) 的 placeholder
   Placeholder = 4,
@@ -47,7 +49,10 @@ export interface Asset {
    * 原始字符串, 我称他为 "字面量", 即未加工之前的值
    */
   literal: string;
-  literalKind: LiteralKind;
+  /**
+   * @deprecated 沒必要區分
+   */
+  literalKind?: LiteralKind;
   /**
    * DOM 元素的选择器
    * 如果 presentation 为 text，则为文本元素

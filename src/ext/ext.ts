@@ -31,7 +31,7 @@ async function onMessageEffect(callback: MessageCallback, message: ExtMessage, s
 
 export const Ext = {
   get: {
-    url() {
+    url(): Promise<string> {
       if (location.href.startsWith("http")) {
         return Promise.resolve(location.href);
       }
