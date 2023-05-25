@@ -1,38 +1,52 @@
-import {BuiltInExtMessageIdentities, ExtMessage, ExtMessageDirections} from "./ext-message";
+import browser from "webextension-polyfill";
+import {ExtMessage, ExtMessageDirections} from "./ext-message";
 
-const getCurrentTabId = async () => {
-  return new Promise<number>((resolve, reject) => {
-    chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
+const getCurrentTab = async () => {
+  return browser.tabs.query({active: true, currentWindow: true})
+    .then(tabs => {
       if (tabs.length > 0) {
-        resolve(tabs[0].id!);
-      } else {
-        reject("No active tab identified.");
+        return tabs[0];
       }
+      throw new Error("No active tab identified.");
     });
-  });
+}
+
+type MessageCallback = (message: ExtMessage, sender: browser.Runtime.MessageSender) => (Promise<any> | undefined | void);
+
+
+async function onMessageEffect(callback: MessageCallback, message: ExtMessage, sender: browser.Runtime.MessageSender) {
+  message = ExtMessage.removeReqPrefix(message);
+  const result = await Promise.resolve(callback(ExtMessage.removeReqPrefix(message), sender))
+  // 如果存在结果就发出一个响应的消息
+  if (result) {
+    Ext.send.message(
+      {
+        ...ExtMessage.toRes(message),
+        payload: await result,
+        direction: message.resDirection!,
+      },
+    )
+  }
 }
 
 export const Ext = {
   get: {
     url() {
-      if (!location.href.startsWith("chrome-extension")) {
+      if (location.href.startsWith("http")) {
         return Promise.resolve(location.href);
       }
-      return new Promise((resolve, reject) => {
-        chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
+      return browser.tabs.query({active: true, currentWindow: true})
+        .then(tabs => {
           if (tabs.length > 0) {
-            return resolve(tabs[0].url)!;
+            return tabs[0].url!;
           }
-          reject("No active tab identified.");
-
-          return true;
+          throw new Error("No active tab identified.");
         })
-      })
     },
   },
   local: {
     async get(key: string) {
-      const data = (await chrome.storage.local.get(key));
+      const data = (await browser.storage.local.get(key));
       if (data[key] && typeof data[key] === "string") {
         return JSON.parse(data[key])
       }
@@ -42,57 +56,56 @@ export const Ext = {
       if (typeof value === "object") {
         value = JSON.stringify(value)
       }
-      Ext.send.message(
-        {
-          identify: BuiltInExtMessageIdentities.LocalChanged,
-        },
-        ExtMessageDirections.Runtime,
-      )
-      await chrome.storage.local.set({[key]: value})
+      await browser.storage.local.set({[key]: value})
       return Promise.resolve();
     },
     clear() {
-      Ext.send.message(
-        {
-          identify: BuiltInExtMessageIdentities.LocalChanged,
-        },
-        ExtMessageDirections.Runtime,
-      )
-      return chrome.storage.local.clear();
+      return browser.storage.local.clear();
     }
   },
   on: {
-    message(callback: (message: ExtMessage) => void) {
-      return chrome.runtime.onMessage.addListener((message) => {
-        callback(message)
+    message(callback: MessageCallback) {
+      return browser.runtime.onMessage.addListener((message: ExtMessage, sender) => {
+        if (ExtMessage.isRes(message)) {
+          return true;
+        }
+        if (!ExtMessage.isReq(message)) {
+          throw new Error(`Message is not a request. messageId = ${message.identify}`);
+        }
+        onMessageEffect(callback, message, sender);
         return true;
       });
     },
-    localChanged(callback: (message: ExtMessage) => void) {
-      return Ext.on.message((message) => {
-        if (message.identify === BuiltInExtMessageIdentities.LocalChanged) {
-          callback(message)
+    response(callback: MessageCallback): void {
+      return browser.runtime.onMessage.addListener((message: ExtMessage, sender) => {
+        if (ExtMessage.isRes(message)) {
+          callback(ExtMessage.removeResPrefix(message), sender)
         }
         return true;
-      });
+      })
     },
   },
   send: {
-    async message(message: ExtMessage, direction: ExtMessageDirections) {
-      switch (direction) {
+    async message(message: ExtMessage): Promise<any> {
+      if (!ExtMessage.isRes(message)) {
+        message = ExtMessage.toReq(message);
+      }
+      switch (message.direction) {
         case ExtMessageDirections.Runtime:
-          return chrome.runtime.sendMessage(message)
+          return browser.runtime.sendMessage(message)
         case ExtMessageDirections.Tab:
-          return chrome.tabs.sendMessage(await getCurrentTabId(), message);
+          return browser.tabs.sendMessage(message.tabId || (await getCurrentTab()).id, message);
+        default:
+          throw new Error("Unknown message direction.");
       }
     },
   },
   reload: {
     async tabs() {
-      return chrome.tabs.reload(await getCurrentTabId())
+      return browser.tabs.reload((await getCurrentTab()).id)
     },
     async runtime() {
-      return chrome.runtime.reload();
+      return browser.runtime.reload();
     }
   }
 }
