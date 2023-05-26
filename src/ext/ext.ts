@@ -7,7 +7,7 @@ const getCurrentTab = async () => {
       if (tabs.length > 0) {
         return tabs[0];
       }
-      throw new Error("No active tab identified.");
+      return Promise.reject("No active tab identified.")
     });
 }
 
@@ -35,13 +35,7 @@ export const Ext = {
       if (location.href.startsWith("http")) {
         return Promise.resolve(location.href);
       }
-      return browser.tabs.query({active: true, currentWindow: true})
-        .then(tabs => {
-          if (tabs.length > 0) {
-            return tabs[0].url!;
-          }
-          throw new Error("No active tab identified.");
-        })
+      return getCurrentTab().then(tab => tab.url!)
     },
   },
   local: {
@@ -87,6 +81,7 @@ export const Ext = {
   },
   send: {
     async message(message: ExtMessage): Promise<any> {
+      console.log("ext.ts send message", message)
       if (!ExtMessage.isRes(message)) {
         message = ExtMessage.toReq(message);
       }
@@ -94,6 +89,10 @@ export const Ext = {
         case ExtMessageDirections.Runtime:
           return browser.runtime.sendMessage(message)
         case ExtMessageDirections.Tab:
+          message.tabId = message.tabId || (await getCurrentTab()).id;
+          if (!message.tabId) {
+            return Promise.reject("No tabId identified.")
+          }
           return browser.tabs.sendMessage(message.tabId || (await getCurrentTab()).id, message);
         default:
           throw new Error("Unknown message direction.");
