@@ -18,7 +18,7 @@ async function onMessageEffect(callback: MessageCallback, message: ExtMessage, s
   message = ExtMessage.removeReqPrefix(message);
   const result = await Promise.resolve(callback(ExtMessage.removeReqPrefix(message), sender))
   // 如果存在结果就发出一个响应的消息
-  if (result) {
+  if (result && message.resDirection) {
     Ext.send.message(
       {
         ...ExtMessage.toRes(message),

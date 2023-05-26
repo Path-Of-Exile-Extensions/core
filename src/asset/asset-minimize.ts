@@ -1,6 +1,5 @@
 import {
   AssetLocalizedPresentationTiming,
-  LiteralKind,
   LiteralLocalizedPresentationViewMode,
   LiteralPresentationMode
 } from "./asset";
@@ -9,8 +8,6 @@ import {AssetVendor} from "./asset-vendor";
 export interface AssetVendorMinimize {
   // literal: string;
   l: string;
-  // literalKind: LiteralKind;
-  lk: LiteralKind;
   // localizedLiteral: string;
   ll: string;
   // elCSSSelector?: string;
@@ -30,7 +27,6 @@ export class AssetVendorMinimizeModel {
   static mapFrom(assetVendor: AssetVendor): AssetVendorMinimize {
     return {
       l: assetVendor.literal,
-      lk: assetVendor.literalKind,
       ll: assetVendor.localizedLiteral,
       elcs: assetVendor.elCSSSelector,
       epi: assetVendor.elParentId,
@@ -45,7 +41,6 @@ export class AssetVendorMinimizeModel {
     return {
       localizedPresentationTiming: assetVendorMinimize.lpt,
       literal: assetVendorMinimize.l,
-      literalKind: assetVendorMinimize.lk,
       localizedLiteral: assetVendorMinimize.ll,
       elCSSSelector: assetVendorMinimize.elcs,
       elParentId: assetVendorMinimize.epi,
