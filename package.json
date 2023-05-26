@@ -8,7 +8,7 @@
   "homepage": "https://github.com/Path-Of-Exile-Extensions",
   "private": false,
   "scripts": {
-    "dev": "vite build --watch",
+    "dev": "vite build --watch & tsc -w",
     "build": "vite build"
   },
   "type": "module",
