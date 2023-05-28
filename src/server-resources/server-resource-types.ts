@@ -1,9 +1,7 @@
 export namespace ServerResourceTypes {
 
   export namespace Items {
-    export type Response = {
-      result: Items[]
-    }
+    export type Response = Items[]
 
     export type Items = {
       id: string
@@ -25,9 +23,7 @@ export namespace ServerResourceTypes {
   }
 
   export namespace Stats {
-    export type Response = {
-      result: Stats[]
-    }
+    export type Response = Stats[]
 
     export interface Stats {
       id: string
@@ -53,9 +49,7 @@ export namespace ServerResourceTypes {
   }
 
   export namespace Static {
-    export interface Response {
-      result: Statics[]
-    }
+    export type Response = Statics[]
 
     export interface Statics {
       id: string

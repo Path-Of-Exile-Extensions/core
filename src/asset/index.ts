@@ -1,4 +1,5 @@
 export * from './asset.model'
 export * from './asset'
+export * from './asset-checksum'
 export * from './asset-minimize'
 export * from './asset-vendor'
