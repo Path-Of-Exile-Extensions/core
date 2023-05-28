@@ -44,7 +44,9 @@ export namespace ExtMessage {
 }
 
 export enum ExtMessageDirections {
-  Runtime,
+  None,
+  // 从 1, 可以避免 if(direction) 判断时， Runtime 为 0(被隐式转换为 false)的情况， 降低心智负担
+  Runtime = 1,
   Tab
 }
 

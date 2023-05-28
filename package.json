@@ -38,11 +38,13 @@
   "exports": {
     ".": {
       "import": "./dist/index.js",
-      "require": "./dist/index.unm.js"
+      "require": "./dist/index.unm.js",
+      "types": "./dist/index.d.ts"
     },
     "./ext": {
       "import": "./dist/ext.js",
-      "require": "./dist/ext.unm.js"
+      "require": "./dist/ext.unm.js",
+      "types": "./dist/ext/index.d.ts"
     }
   }
 }

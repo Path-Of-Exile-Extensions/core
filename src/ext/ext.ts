@@ -15,18 +15,23 @@ type MessageCallback = (message: ExtMessage, sender: browser.Runtime.MessageSend
 
 
 async function onMessageEffect(callback: MessageCallback, message: ExtMessage, sender: browser.Runtime.MessageSender) {
+  // console.log("onMessageEffect", message)
   message = ExtMessage.removeReqPrefix(message);
+  // console.log("onMessageEffect removeReqPrefix", message)
   const result = await Promise.resolve(callback(ExtMessage.removeReqPrefix(message), sender))
+  // console.log("onMessageEffect result", message, result)
   // 如果存在结果就发出一个响应的消息
   if (result && message.resDirection) {
-    Ext.send.message(
-      {
-        ...ExtMessage.toRes(message),
-        payload: await result,
-        direction: message.resDirection!,
-      },
-    )
+    const resMessage = {
+      ...ExtMessage.toRes(message),
+      payload: await result,
+      direction: message.resDirection!,
+    }
+    console.log("onMessageEffect send message", resMessage)
+    Ext.send.message(resMessage)
   }
+
+  return Promise.resolve();
 }
 
 export const Ext = {
@@ -37,6 +42,7 @@ export const Ext = {
       }
       return getCurrentTab().then(tab => tab.url!)
     },
+    currentTab: getCurrentTab,
   },
   local: {
     async get(key: string) {
@@ -59,14 +65,14 @@ export const Ext = {
   },
   on: {
     message(callback: MessageCallback) {
-      return browser.runtime.onMessage.addListener((message: ExtMessage, sender) => {
+      return browser.runtime.onMessage.addListener(async (message: ExtMessage, sender) => {
         if (ExtMessage.isRes(message)) {
           return true;
         }
         if (!ExtMessage.isReq(message)) {
           throw new Error(`Message is not a request. messageId = ${message.identify}`);
         }
-        onMessageEffect(callback, message, sender);
+        await onMessageEffect(callback, message, sender);
         return true;
       });
     },
