@@ -89,14 +89,16 @@ export const Ext = {
   send: {
     // 多播
     async multicast(message: ExtMessage) {
-      Ext.send.message({
-        ...message,
-        resDirection: ExtMessageDirections.Runtime,
-      })
-      Ext.send.message({
-        ...message,
-        resDirection: ExtMessageDirections.Tab,
-      })
+      return Promise.all([
+        Ext.send.message({
+          ...message,
+          direction: ExtMessageDirections.Runtime,
+        }),
+        Ext.send.message({
+          ...message,
+          direction: ExtMessageDirections.Tab,
+        })
+      ])
     },
     async message(message: ExtMessage): Promise<any> {
       console.log("ext.ts send message", message)
@@ -111,7 +113,7 @@ export const Ext = {
           if (!message.tabId) {
             return Promise.reject("No tabId identified.")
           }
-          return browser.tabs.sendMessage(message.tabId || (await getCurrentTab()).id, message);
+          return browser.tabs.sendMessage(message.tabId, message);
         default:
           throw new Error("Unknown message direction.");
       }
