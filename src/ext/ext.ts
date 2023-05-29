@@ -21,7 +21,8 @@ async function onMessageEffect(callback: MessageCallback, message: ExtMessage, s
   const result = await Promise.resolve(callback(ExtMessage.removeReqPrefix(message), sender))
   // console.log("onMessageEffect result", message, result)
   // 如果存在结果就发出一个响应的消息
-  if (result && message.resDirection) {
+  // 不是 null 或者 undefined 就是合法的结果
+  if (result != null && message.resDirection) {
     const resMessage = {
       ...ExtMessage.toRes(message),
       payload: await result,
@@ -86,6 +87,17 @@ export const Ext = {
     },
   },
   send: {
+    // 多播
+    async multicast(message: ExtMessage) {
+      Ext.send.message({
+        ...message,
+        resDirection: ExtMessageDirections.Runtime,
+      })
+      Ext.send.message({
+        ...message,
+        resDirection: ExtMessageDirections.Tab,
+      })
+    },
     async message(message: ExtMessage): Promise<any> {
       console.log("ext.ts send message", message)
       if (!ExtMessage.isRes(message)) {
