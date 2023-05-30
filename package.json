@@ -48,5 +48,15 @@
       "require": "./dist/ext.unm.js",
       "types": "./dist/ext/index.d.ts"
     }
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "dist/index.d.ts"
+      ],
+      "module2": [
+        "dist/ext/index.d.ts"
+      ]
+    }
   }
 }
