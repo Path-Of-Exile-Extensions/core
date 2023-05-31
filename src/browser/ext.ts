@@ -1,5 +1,5 @@
 import browser from "webextension-polyfill";
-import {MessageModule} from "./message";
+import {MessageModule} from "./modules/message";
 
 const getCurrentTab = async () => {
   return browser.tabs.query({active: true, currentWindow: true})

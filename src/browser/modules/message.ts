@@ -1,5 +1,5 @@
-import {ExtMessage, ExtMessagePortID} from "./ext-message";
-import {uniqId} from "../atom";
+import {ExtMessage, ExtMessagePortID} from "../ext-message";
+import {uniqId} from "../../atom";
 import browser from "webextension-polyfill";
 import EventEmitter from "eventemitter3";
 
@@ -64,6 +64,11 @@ export namespace MessageModule {
   export const post = (port: Port, message: ExtMessage) => {
     // console.log("ext:message.ts port", message)
     return port.postMessage(message)
+  }
+  export const multicast = (ports: Port[], message: ExtMessage) => {
+    ports.forEach(port => {
+      post(port, message)
+    })
   }
   export const post$ = <R = any>(port: Port, message: ExtMessage, timeout = 5000): Promise<R> => {
     // console.log("ext:message.ts port$", message)

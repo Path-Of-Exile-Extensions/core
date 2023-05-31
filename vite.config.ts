@@ -8,7 +8,7 @@ export default defineConfig((config) => {
     build: {
       minify: false,
       lib: {
-        entry: ['src/index.ts', 'src/browser'],
+        entry: ['src/index.ts', 'src/browser', 'src/l10n'],
         name: 'POEL10N_CORE',
         fileName: (format, entryName) => {
           return (format === "es" ? `${entryName}.js` : `${entryName}.umd.js`)
@@ -22,6 +22,7 @@ export default defineConfig((config) => {
            * 但是在 index 中引用会导致 ext 依赖的 webextension-polyfill 被直接引入
            */
           'browser': path.resolve(__dirname, 'src/browser.ts'),
+          'l10n': path.resolve(__dirname, 'src/l10n.ts'),
         }
       }
     },
