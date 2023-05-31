@@ -8,7 +8,7 @@ export default defineConfig((config) => {
     build: {
       minify: false,
       lib: {
-        entry: ['src/index.ts', 'src/ext'],
+        entry: ['src/index.ts', 'src/browser'],
         name: 'POEL10N_CORE',
         fileName: (format, entryName) => {
           return (format === "es" ? `${entryName}.js` : `${entryName}.umd.js`)
@@ -21,7 +21,7 @@ export default defineConfig((config) => {
            * 如果不指定这个入口, Rollup 会自动把它优化掉, 因为没有在 index.ts 中引用
            * 但是在 index 中引用会导致 ext 依赖的 webextension-polyfill 被直接引入
            */
-          'ext': path.resolve(__dirname, 'src/ext/index.ts'),
+          'browser': path.resolve(__dirname, 'src/browser.ts'),
         }
       }
     },

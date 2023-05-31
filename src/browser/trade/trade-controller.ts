@@ -173,7 +173,7 @@ export class TradeController {
     return Ext.get.url()
       .then((href) => {
         this._href = href;
-        console.log("website-controller.official.ts: initialize", this.menuType)
+        // console.log("website-controller.official.ts: initialize", this.menuType)
       })
   }
 }

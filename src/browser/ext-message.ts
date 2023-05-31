@@ -6,6 +6,18 @@ export interface ExtMessage<T = any> {
 }
 
 export namespace ExtMessage {
+  export const is = (message: unknown): message is ExtMessage => {
+    if (!message) {
+      return false;
+    }
+    if (typeof message !== "object") {
+      return false;
+    }
+    if (!("identify" in message)) {
+      return false;
+    }
+    return true;
+  }
   export const isRes = (message: ExtMessage) => {
     return message.identify.startsWith("res:");
   }

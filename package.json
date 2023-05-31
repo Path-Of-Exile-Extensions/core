@@ -14,7 +14,8 @@
   },
   "type": "module",
   "dependencies": {
-    "webextension-polyfill": "^0.10.0"
+    "webextension-polyfill": "^0.10.0",
+    "eventemitter3": "^5.0.1"
   },
   "devDependencies": {
     "tslib": "^2.5.2",
@@ -43,10 +44,10 @@
       "require": "./dist/index.unm.js",
       "types": "./dist/index.d.ts"
     },
-    "./ext": {
-      "import": "./dist/ext.js",
-      "require": "./dist/ext.unm.js",
-      "types": "./dist/ext/index.d.ts"
+    "./browser": {
+      "import": "./dist/browser.js",
+      "require": "./dist/browser.unm.js",
+      "types": "./dist/browser.d.ts"
     }
   },
   "typesVersions": {
@@ -54,8 +55,8 @@
       "*": [
         "dist/index.d.ts"
       ],
-      "module2": [
-        "dist/ext/index.d.ts"
+      "browser": [
+        "dist/browser.d.ts"
       ]
     }
   }
