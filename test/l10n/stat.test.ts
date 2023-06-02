@@ -11,6 +11,16 @@ describe("stat.fill", () => {
       )
     ).eq("被你缓速的敌人的生命回复率提高 20%")
   });
+  it("应该填充单个 +#%", () => {
+    // implicit.stat_1001829678
+    expect(
+      Stat.fill(
+        "+18% Chance to Block Attack Damage while wielding a Staff",
+        "持长杖时攻击伤害格挡几率 #% (长杖)",
+        "#% Chance to Block Attack Damage while wielding a Staff (Staves)"
+      )
+    ).eq("持长杖时攻击伤害格挡几率 18% (长杖)")
+  });
   it("应该填充单个 #", () => {
     expect(
       Stat.fill(
@@ -27,7 +37,13 @@ describe("stat.fill", () => {
         "Adds # to # Cold Damage"
       )
     ).eq("附加 2 to 10 基础冰霜伤害")
-
   });
 
+})
+
+describe("stat.clearParentheses", () => {
+  it('无事发生', function () {
+    expect([])
+      .eq([])
+  });
 })

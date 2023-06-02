@@ -1,5 +1,5 @@
 import {describe, expect, it} from 'vitest'
-import {AssetChecksum} from "../../src";
+import {AssetChecksum} from "../../src/l10n";
 
 describe('Asset Checksum', () => {
   it('should be not find difference', async () => {
