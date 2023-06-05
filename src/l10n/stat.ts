@@ -1,3 +1,5 @@
+import {GemStatModel} from "../entities";
+
 export namespace Stat {
   export namespace Is {
     /**
@@ -274,22 +276,19 @@ export namespace Stat {
     if (Is.Some(stat)) {
       return Replace.Some(Extract.Some(statWithContent, stat), statWithLang);
     }
-    return statWithLang;
+    return statWithContent;
   }
 
   /**
-   * 这个函数的作用就是把 statWithContent 中的内容填充到 statWithLang 中
-   * 和 replace 的区别是这个函数是模糊匹配的, 所以它传入的参数可能是
-   * Base duration is 3.00 seconds
-   * 70% more Damage with Bleeding while in Blood Stance
-   * +2% to Critical Strike Multiplier
-   * 最终要得到
-   *
+   * 这个函数的作用就是把 statWithContent 中的内容填充到 gemStat.name 中
    *
    * @param statWithContent - 填充了内容的 stat
-   * @param statWithLang - 指定语言的 stat
+   * @param gemStat - 指定语言的 stat
    */
-  export function replaceFuzzy() {
-
+  export function replaceFuzzy(statWithContent: string, gemStat: GemStatModel) {
+    // 降低心智负担
+    const statWithLang = gemStat.name
+    const stat = gemStat.name_
+    return replace(statWithContent, statWithLang, stat)
   }
 }
