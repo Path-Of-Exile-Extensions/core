@@ -13,13 +13,14 @@ type PortMessageCallback$<T = any> = (message: ExtMessage, port: Port) => Promis
  */
 type EventTypes = "sms" | "call"
 type OffEventListeners = () => void
-const portEventEmitter = new WeakMap<Port, EventEmitter<EventTypes>>()
-const savePort = (port: Port) => {
+const portEventEmitter = new Map<Port, EventEmitter<EventTypes>>()
+const storePort = (port: Port) => {
   const eventListeners = new EventEmitter<EventTypes>();
   port.onMessage.addListener((message: unknown | ExtMessage, port) => {
     // console.log("ext:message.ts onMessage", message)
     if (!ExtMessage.is(message)) {
-      throw new Error("ext:message.ts message is not ExtMessage")
+      // throw new Error("ext:message.ts message is not ExtMessage")
+      return console.warn("ext:message.ts message is not ExtMessage")
     }
     if (ExtMessage.isReq(message)) {
       message = ExtMessage.removeReqPrefix(message)
@@ -43,12 +44,12 @@ export namespace MessageModule {
     }
     id += ":" + uniqId();
     const port = browser.runtime.connect({name: id});
-    savePort(port)
+    storePort(port)
     return port;
   }
   export const onConnect = (callback: (port: Port) => void): OffEventListeners => {
     const _callback = (port: Port) => {
-      savePort(port)
+      storePort(port)
       callback(port)
     }
     browser.runtime.onConnect.addListener(_callback)

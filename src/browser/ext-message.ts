@@ -62,6 +62,11 @@ export enum ExtMessageDirections {
 export enum BuiltInExtMessageIdentities {
   // ContentScript 注入完成
   ContentScriptReady = "ContentScriptReady",
+  // 转发消息, 用于 ContentScript 和 Popup 之间的消息通信， 转发的工作由 Runtime 完成
+  // 冒号后面是接收方
+  // 需要转发的消息则放在 payload 中
+  "ForwardMessage:ContentScript" = "ForwardMessage:ContentScript",
+  "ForwardMessage:Popup" = "ForwardMessage:Popup",
 }
 
 export enum ExtMessagePortID {
