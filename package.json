@@ -14,17 +14,18 @@
   },
   "type": "module",
   "dependencies": {
-    "webextension-polyfill": "^0.10.0",
-    "eventemitter3": "^5.0.1"
+    "eventemitter3": "^5.0.1",
+    "fuse.js": "^6.6.2",
+    "webextension-polyfill": "^0.10.0"
   },
   "devDependencies": {
+    "@types/chrome": "^0.0.237",
+    "@types/node": "18",
+    "@types/webextension-polyfill": "^0.10.0",
     "tslib": "^2.5.2",
+    "typescript": "^5.0.4",
     "vite": "^4.3.8",
     "vite-plugin-dts": "^2.3.0",
-    "typescript": "^5.0.4",
-    "@types/node": "18",
-    "@types/chrome": "^0.0.237",
-    "@types/webextension-polyfill": "^0.10.0",
     "vitest": "^0.31.1"
   },
   "optionalDependencies": {

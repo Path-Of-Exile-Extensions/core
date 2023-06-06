@@ -71,7 +71,7 @@ export namespace MessageModule {
       post(port, message)
     })
   }
-  export const post$ = <R = any>(port: Port, message: ExtMessage, timeout = 5000): Promise<R> => {
+  export const post$ = <R = any>(port: Port, message: ExtMessage, timeout= 9999999): Promise<R> => {
     // console.log("ext:message.ts port$", message)
     message = ExtMessage.toReq(message)
     message.messageId = message.messageId || uniqId()

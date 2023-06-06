@@ -1,7 +1,7 @@
 import {describe, expect, it} from "vitest";
 import {Stat} from "../../src/l10n";
 
-describe("stat.fill", () => {
+describe("stat.replace", () => {
   it("应该填充单个 #%", () => {
     expect(
       Stat.replace(
@@ -37,6 +37,17 @@ describe("stat.fill", () => {
         "Adds # to # Cold Damage"
       )
     ).eq("附加 2 to 10 基础冰霜伤害")
+  });
+
+  it("test 1", () => {
+    expect(
+      Stat.replace(
+        "Strength's Damage bonus applies to Projectile Attack Damage as well for Supported Skills",
+        "被辅助技能的投射物攻击伤害可以同样获得力量伤害奖励",
+        "Strength's Damage bonus applies to Projectile Attack Damage as well for Supported Skills"
+      )
+    ).eq("被辅助技能的投射物攻击伤害可以同样获得力量伤害奖励")
+
   });
 
 })

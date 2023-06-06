@@ -1,4 +1,5 @@
 import {GemStatModel} from "../entities";
+import Fuse from "fuse.js";
 
 export namespace Stat {
   export namespace Is {
@@ -276,19 +277,44 @@ export namespace Stat {
     if (Is.Some(stat)) {
       return Replace.Some(Extract.Some(statWithContent, stat), statWithLang);
     }
-    return statWithContent;
+    return statWithLang;
   }
 
   /**
-   * 这个函数的作用就是把 statWithContent 中的内容填充到 gemStat.name 中
+   * 这个函数的作用是尝试从 statWithContent 中匹配到合适的 gemStat
+   * 通过 gemStat 的 name_ 来匹配, name_ 字段是原始语言的 stat
+   * 如果匹配到了, gemStat 返回出来
+   * 如果没有匹配到, 就返回 statWithLang
+   *
+   * 示例
+   * gemStat.name_: ["Deals # - # Fire Damage", "#% chance to Ignite enemies"]
+   * statWithContent: "Deals 9 - 14 Fire Damage"
    *
    * @param statWithContent - 填充了内容的 stat
-   * @param gemStat - 指定语言的 stat
+   * @param gemStats - 指定语言的 stat 数组
    */
-  export function replaceFuzzy(statWithContent: string, gemStat: GemStatModel) {
-    // 降低心智负担
-    const statWithLang = gemStat.name
-    const stat = gemStat.name_
-    return replace(statWithContent, statWithLang, stat)
+  export function matching(statWithContent: string, gemStats: GemStatModel[]): GemStatModel | undefined {
+    const options = {
+      // isCaseSensitive: false,
+      // includeScore: false,
+      // shouldSort: true,
+      // includeMatches: false,
+      // findAllMatches: false,
+      // minMatchCharLength: 1,
+      // location: 0,
+      // threshold: 0.6,
+      // distance: 100,
+      // useExtendedSearch: false,
+      // ignoreLocation: false,
+      // ignoreFieldNorm: false,
+      // fieldNormWeight: 1,
+      keys: [
+        "name_"
+      ]
+    };
+
+    const fuse = new Fuse(gemStats, options).search(statWithContent)
+
+    return fuse[0]?.item;
   }
 }
