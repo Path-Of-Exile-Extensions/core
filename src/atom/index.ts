@@ -1,3 +1,5 @@
 export * from './delay'
+export * from './identity'
+export * from './test-connectivity'
 export * from './uniq-id'
 export * from './wait-some-one'

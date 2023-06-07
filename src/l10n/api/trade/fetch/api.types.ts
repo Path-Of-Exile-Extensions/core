@@ -153,15 +153,9 @@ export namespace TradeFetchTypes {
   export interface Hybrid {
     isVaalGem: boolean
     baseTypeName: string
-    properties: Property2[]
+    properties: Property[]
     explicitMods: string[]
     secDescrText: string
-  }
-
-  export interface Property2 {
-    name: string
-    values: [string, number][]
-    displayMode: number
   }
 
 }

@@ -22,6 +22,7 @@ export namespace Ext {
       return getCurrentTab().then(tab => tab.url!)
     }
     export const currentTab = getCurrentTab
+    export const runtime = browser.runtime;
   }
 
   export namespace local {
@@ -51,6 +52,12 @@ export namespace Ext {
 
     export function runtime() {
       return browser.runtime.reload();
+    }
+  }
+
+  export namespace tabs {
+    export const create = (createProperties: browser.Tabs.CreateCreatePropertiesType) => {
+      return browser.tabs.create(createProperties)
     }
   }
 
