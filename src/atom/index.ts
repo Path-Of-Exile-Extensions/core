@@ -1,6 +1,7 @@
 export * from './delay'
 export * from './execute-at-least'
 export * from './identity'
+export * from './is'
 export * from './test-connectivity'
 export * from './uniq-id'
 export * from './wait-some-one'
